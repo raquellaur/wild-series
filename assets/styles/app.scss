@@ -1,7 +1,15 @@
 // Your variable overrides
-$body-bg: blue;
-$body-color: white;
+$body-bg: white;
+$body-color: blue;
+
+$theme-colors: (
+        "primary": #7F32DB,
+        "secondary": #1CDB51,
+);
 
 @import "~bootstrap/scss/bootstrap";
+
+
+
 
 
