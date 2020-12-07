@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="program">
+        <div class="programContainer">
+            <h2>Season {{ season.number }} de {{ program.title }}</h2>
+            <p>{{ season.description }}</p>
+            <p>Catégorie : {{ program.category.name }}</p>
+            <ul>Liste de episodes :
+                {% if episodes is empty %}
+                    <p>This season don't have episodes!</p>
+                {% else %}
+                    {% for episode in episodes %}
+                        <li>
+                            <a href="#">Episode {{ episode.number }}: {{ episode.title }}</a>
+                            <p>{{ episode.synopsis }}</p>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+
+            </ul>
+        </div>
+    </section>
+    <a href="{{ path('program_index') }}">
+        Retour à la liste des programmes
+    </a>
+{% endblock %}
