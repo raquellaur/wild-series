@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <section class="program">
-        <div class="programContainer">
+        <div>
             <h2>Season {{ season.number }} de {{ program.title }}</h2>
             <p>{{ season.description }}</p>
             <p>Catégorie : {{ program.category.name }}</p>
@@ -20,7 +19,6 @@
 
             </ul>
         </div>
-    </section>
     <a href="{{ path('program_index') }}">
         Retour à la liste des programmes
     </a>
