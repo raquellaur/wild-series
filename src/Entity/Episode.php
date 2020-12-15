@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EpisodeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EpisodeRepository::class)
@@ -25,7 +26,7 @@ class Episode
     /**
      * @ORM\Column(type="integer")
      */
-    private $number;
+          private $number;
 
     /**
      * @ORM\Column(type="text", nullable=true)

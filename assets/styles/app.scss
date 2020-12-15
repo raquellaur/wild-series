@@ -1,13 +1,36 @@
 // Your variable overrides
+
+.container{
+    max-width: 700px;
+    margin: auto;
+}
+
 $body-bg: white;
-$body-color: blue;
+$body-color: #565A45;
 
 $theme-colors: (
-        "primary": #7F32DB,
-        "secondary": #1CDB51,
+    "primary": #7F32DB,
+    "secondary": #1CDB51,
 );
 
 @import "~bootstrap/scss/bootstrap";
+
+.itemsProgram{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.media-body{
+    padding-left: 40px;
+}
+.media{
+    margin-top: 30px;
+}
+.img_program{
+    width: 300px;
+}
 
 
 

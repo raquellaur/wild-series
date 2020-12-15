@@ -1,13 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(categories) }}
-
     <ul class="list-group list-group-flush">
         {% for category in categories %}
             <li class="list-group-item"><a href="{{ path('category_show', {categoryName: category.name}) }}">{{ category.name }}</a></li>
         {% endfor %}
-
     </ul>
-
 {% endblock %}

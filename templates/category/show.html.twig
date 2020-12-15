@@ -4,18 +4,19 @@
 
 {% block body %}
     <h1>Toutes les séries de la catégorie : {{ category.name }}</h1>
-    <section class="program">
-        {% for program in programs %}
-            <div class="programContainer">
-                <h2>{{ program.id }} / {{ program.title }}</h2>
-                <img src="{{ program.poster }}" alt="{{ program.title }} poster">
-                <p>{{ program.summary }}</p>
-                <a href="{{ path("program_show", { id: program.id }) }}">Show !</a>
+    {% for program in programs %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ program.poster }}" class="card-img-top" alt="{{ program.title }}">
+            <div class="card-body">
+                <h5 class="card-title">C{{ program.title }} poster</h5>
+                <p class="card-text">{{ program.summary }}</p>
+                <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">SHOW</a>
             </div>
-        {% else %}
-            <p>Aucune série trouvée.</p>
-        {% endfor %}
-    </section>
+        </div>
+    {% else %}
+        <p>Aucune série trouvée.</p>
+    {% endfor %}
+
     <a href="{{ path('app_index') }}">
         Retour à l'accueil
     </a>

@@ -8,11 +8,13 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    <div class="container">
     <header>
         {% include '_navbar.html.twig' %}
     </header>
         {% block body %}{% endblock %}
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
+    </div>
     </body>
 </html>

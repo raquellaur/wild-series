@@ -22,19 +22,18 @@ class SeasonRepository extends ServiceEntityRepository
     // /**
     //  * @return Season[] Returns an array of Season objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function inOrder($value)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+            ->andWhere('s.program = :val')
             ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('s.number', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Season

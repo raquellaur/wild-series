@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actor{% endblock %}
+
+{% block body %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ actor.name }}</h5>
+
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+             {% for program in programs %}
+                <li class="list-group-item">{{ program.title }}</li>
+             {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{{ path('actor_index') }}">back to list</a>
+
+    <a href="{{ path('actor_edit', {'id': actor.id}) }}">edit</a>
+
+    {{ include('actor/_delete_form.html.twig') }}
+{% endblock %}

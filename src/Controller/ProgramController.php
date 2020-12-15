@@ -5,11 +5,16 @@ namespace App\Controller;
 use App\Entity\Program;
 use App\Entity\Episode;
 use App\Entity\Season;
+use App\Repository\SeasonRepository;
+use App\Service\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Repository\ProgramRepository;
+use App\Form\ProgramType;
+use Doctrine\ORM\EntityManagerInterface;
 /**
  * @Route("/programs", name="program_")
  */
@@ -30,15 +35,53 @@ class ProgramController extends AbstractController
         );
     }
     /**
-     * @Route("/show/{id<^[0-9]+$>}", methods={"GET"}, name="show")
+     * The controller for the category add form
+     * @param Request $request
+     * @param Slugify $slugify
+     * @Route("/new", name="new")
+     */
+    public function new(Request $request, Slugify $slugify) : Response
+    {
+        // Create a new Category Object
+        $program = new Program();
+        // Create the associated Form
+        $form = $this->createForm(ProgramType::class, $program);
+        //Get dta from HTTP request
+        $form->handleRequest($request);
+        //Was the from submitted?
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Deal with the submitted data
+            // Get the Entity Manager
+            $entityManager = $this->getDoctrine()->getManager();
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
+            // Persist Category Object
+            $entityManager->persist($program);
+            // Flush the persisted object
+            $entityManager->flush();
+            // Finally redirect to categories list
+            return $this->redirectToRoute('program_index');
+
+        }
+        // Render the form
+        return $this->render('program/new.html.twig', [
+            "form" => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{slug}", methods={"GET"}, name="show")
+     * @param Program $program
+     * @param SeasonRepository $seasonRepository
      * @return Response
      */
-    public function show(Program $program): Response
+    public function show(Program $program, SeasonRepository $seasonRepository): Response
     {
-        $seasons = $program->getSeasons();
+        $seasons = $seasonRepository->inOrder($program->getId());
+
         return $this->render('program/show.html.twig', [
             'program' => $program,
-            'seasons' => $seasons
+            'seasons' => $seasons,
         ]);
     }
 
@@ -46,6 +89,8 @@ class ProgramController extends AbstractController
      * @route("/programs/{programId}/seasons/{seasonId}", name="season_show", methods={"GET"})
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programId": "id"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonId": "id"}})
+     * @param Program $program
+     * @param Season $season
      * @return Response
      */
     public function showSeason(Program $program, Season $season):Response
@@ -67,6 +112,28 @@ class ProgramController extends AbstractController
             'program' => $program,
             'season' => $season,
             'episodes' => $episodes,
+        ]);
+    }
+    /**
+     * @route("/{slug}/edit", name="edit", methods={"GET", "POST"})
+     * @param Program $program
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function edit(Program $program, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($program);
+            $entityManager->flush();
+            return $this->redirectToRoute("program_index");
+        }
+        return $this->render('program/edit.html.twig', [
+            'program' => $program,
+            "form" => $form->createView(),
         ]);
     }
 
@@ -92,5 +159,22 @@ class ProgramController extends AbstractController
             'season' => $season,
             'episode' => $episode,
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Program $program
+     * @return Response
+     */
+    public function delete(Request $request, Program $program): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($program);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('program_index');
     }
 }
