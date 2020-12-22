@@ -3,6 +3,7 @@
 {% block title %}All programs{% endblock %}
 
 {% block body %}
+    {{ dump(programs) }}
     <h1>Toutes les series de la table program:</h1>
     <div class="itemsProgram">
     {% for program in programs %}

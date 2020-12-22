@@ -6,6 +6,7 @@
             <h2>Saison {{ season.number}}</h2>
             <h3>{{ episode.number }} - {{ episode.title }}</h3>
             <p>{{ episode.synopsis }}</p>
+            {{ include('program/_formComment.html.twig') }}
         </div>
     <a href="{{ path('program_season_show', {programId: program.id, seasonId: season.id} )}}">
         Retour à la liste!
